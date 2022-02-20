@@ -101,7 +101,7 @@ var yourscript = exec('sh /rtmp-server/scripts/test.sh',
         (error, stdout, stderr) => {
             console.log(stdout);
             console.log(stderr);
-            if (error !== null) {
+            if (error != null) {
                 return res.status(500).send('Error:'+error);
             }else{
                 resultado.result="success";
