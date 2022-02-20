@@ -107,7 +107,7 @@ var resultado ={
     result: "fail"
   };
 
-  var scriptShell="sh /rtmp-server/scripts/init.sh "+config.clubname+" "+config.camera+" "+config.cameraport+" "+config.streamport+" "+config.playtime+" "+config.player;
+  var scriptShell="sh /rtmp-server/scripts/init.sh "+config.clubname+" "+config.camera+" "+config.cameraport+" "+config.streamport+" "+config.playtime+" "+config.player+" "+config.private+" "+config.description;
 
 var yourscript = exec(scriptShell,
         (error, stdout, stderr) => {
