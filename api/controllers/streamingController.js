@@ -25,7 +25,7 @@ function validateNumber(myproperty,charNumber)
 function validatePlaytime(myproperty)
 {
    
-    if (myproperty==null || myproperty.length>1 || myproperty<1 || myproperty>3 || isNaN(myproperty))
+    if (myproperty==null || myproperty.length>3 || myproperty<1 || myproperty>120 || isNaN(myproperty))
         return false;
     else
         return true;
