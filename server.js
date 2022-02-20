@@ -13,7 +13,7 @@ var routes = require('./api/routes/streamingRoutes'); //importing route
 routes(app); //register the route
 
 
-app.listen(port);
+app.listen(3000, '0.0.0.0');
 
 
 console.log('todo list RESTful API server started on: ' + port);
