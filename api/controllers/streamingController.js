@@ -97,7 +97,7 @@ var resultado ={
     result: "fail"
   };
 
-var yourscript = exec('sh /rtmp-server/scripts/test.sh',
+var yourscript = exec('sh /rtmp-server/scripts/test.sh',[config.clubname],
         (error, stdout, stderr) => {
             console.log(stdout);
             if (error != null) {
