@@ -32,10 +32,10 @@ function validatePlaytime(myproperty)
 }
 
 
-function validateRecord(myproperty)
+function validatePrivate(myproperty)
 {
    
-    if (myproperty==null || myproperty.length>1 || (myproperty!=1 && myproperty!=0) || isNaN(myproperty))
+    if (myproperty==null ||  (myproperty!=true && myproperty!=false))
         return false;
     else
         return true;
@@ -75,6 +75,14 @@ exports.startCameraStream = function(req, res) {
                     }else{
                         if (!validateString(config.player,6)){
                             return res.status(500).send('Bad Request: Invalid player');
+                        }else{
+                            if (!validatePrivate(config.private)){
+                                return res.status(500).send('Bad Request: Invalid private');
+                            }else{
+                                if (!validateString(config.description,10)){
+                                    return res.status(500).send('Bad Request: Invalid description');
+                                }
+                            }
                         }
                     }
                 }
@@ -94,6 +102,8 @@ var resultado ={
     streamport: config.streamport,
     playtime: config.playtime,
     player: config.player,
+    private: config.private,
+    description: config.description,
     result: "fail"
   };
 
