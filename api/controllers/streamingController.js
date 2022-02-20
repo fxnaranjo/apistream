@@ -101,3 +101,13 @@ exports.startCameraStream = function(req, res) {
   
 
 };
+
+
+exports.healthStreaming = function(req, res) {
+
+  
+    return res.status(200).send('Streaming API Up and Running!!')
+
+  
+
+};
