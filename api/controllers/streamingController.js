@@ -101,7 +101,6 @@ var resultado ={
 
 var yourscript = exec(scriptShell,
         (error, stdout, stderr) => {
-            console.log(stdout);
             if (error != null) {
                 return res.status(500).send('Error:'+error);
             }else{
