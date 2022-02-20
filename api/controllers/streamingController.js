@@ -46,35 +46,35 @@ exports.startCameraStream = function(req, res) {
 
     if (  req.headers.authorization !== 'Basic ZnhuYXJhbmpvOjAyMGt3MzA=' )
     {
-        return res.status(401).send('Authentication denied.')
+        return res.status(401).send('Authentication denied.');
     }
 
     var config = req.body;
     
     if (config==null)
-    return res.status(500).send('Bad Request')
+    return res.status(500).send('Bad Request');
 
     if (!validateString(config.clubname,6))
     {
-        return res.status(500).send('Bad Request: Invalid clubname')
+        return res.status(500).send('Bad Request: Invalid clubname');
     }else{
         if (!validateString(config.camera,3))
         {
-            return res.status(500).send('Bad Request: Invalid camera')
+            return res.status(500).send('Bad Request: Invalid camera');
         }else
         {
             if (!validateNumber(config.cameraport,4))
             {
-                return res.status(500).send('Bad Request: Invalid cameraport')
+                return res.status(500).send('Bad Request: Invalid cameraport');
             }else{
                 if (!validateNumber(config.streamport,4)){
-                    return res.status(500).send('Bad Request: Invalid streamport')
+                    return res.status(500).send('Bad Request: Invalid streamport');
                 }else{
                     if (!validatePlaytime(config.playtime)){
-                        return res.status(500).send('Bad Request: Invalid playtime')
+                        return res.status(500).send('Bad Request: Invalid playtime');
                     }else{
                         if (!validateString(config.player,6)){
-                            return res.status(500).send('Bad Request: Invalid player')
+                            return res.status(500).send('Bad Request: Invalid player');
                         }
                     }
                 }
@@ -83,17 +83,32 @@ exports.startCameraStream = function(req, res) {
     }
      
     
+///////////CALL SHELL SCRIPT////////////////////////
 
-    
-  var resultado ={
+const { exec } = require('child_process');
+
+var resultado ={
     clubname: config.clubname,
     camera: config.camera,
     cameraport: config.cameraport,
     streamport: config.streamport,
     playtime: config.playtime,
     player: config.player,
-    result: "success"
+    result: "fail"
   };
+
+var yourscript = exec('sh /rtmp-server/scripts/test.sh',
+        (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+                return res.status(500).send('Error:'+error);
+            }else{
+                resultado.result="success";
+            }
+        });
+
+    
 
   res.json(resultado);
 
