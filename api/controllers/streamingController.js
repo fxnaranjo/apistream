@@ -73,14 +73,14 @@ exports.startCameraStream = function(req, res) {
                     if (!validatePlaytime(config.playtime)){
                         return res.status(500).send('Bad Request: Invalid playtime');
                     }else{
-                        if (!validateString(config.player,6)){
+                        if (!validateString(config.player,5)){
                             return res.status(500).send('Bad Request: Invalid player');
                         }else{
                             if (!validatePrivate(config.private)){
                                 return res.status(500).send('Bad Request: Invalid private');
                             }else{
                                 if (!validateString(config.description,10)){
-                                    return res.status(500).send('Bad Request: Invalid description');
+                                    return res.status(500).send('Bad Request: Invalid description: 10 characters');
                                 }
                             }
                         }
