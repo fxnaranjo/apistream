@@ -7,6 +7,10 @@ module.exports = function(app) {
     .post(todoList.startCameraStream)
 
   // todoList Routes
+  app.route('/stopStreaming')
+    .post(todoList.stopCameraStream)
+
+  // todoList Routes
   app.route('/healthStreaming')
     .get(todoList.healthStreaming)
 

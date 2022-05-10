@@ -129,6 +129,75 @@ var yourscript = exec(scriptShell,
 };
 
 
+
+exports.stopCameraStream = function(req, res) {
+
+    if (  req.headers.authorization !== 'Basic ZnhuYXJhbmpvOjAyMGt3MzA=' )
+    {
+        return res.status(401).send('Authentication denied.');
+    }
+
+    var config = req.body;
+    
+    if (config==null)
+    return res.status(500).send('Bad Request');
+
+    if (!validateString(config.clubname,6))
+    {
+        return res.status(500).send('Bad Request: Invalid clubname');
+    }else{
+        if (!validateString(config.camera,3))
+        {
+            return res.status(500).send('Bad Request: Invalid camera');
+        }else
+        {
+            if (!validateString(config.player,5))
+            {
+                return res.status(500).send('Bad Request: Invalid player');
+            }else{
+                if (!validateStringID(config.streamID)){
+                    return res.status(500).send('Bad Request: Invalid stream ID');
+                }
+            }
+        }
+    }
+     
+    
+///////////CALL SHELL SCRIPT////////////////////////
+
+const { exec } = require('child_process');
+
+var resultado ={
+    clubname: config.clubname,
+    camera: config.camera,
+    player: config.player,
+    streamId: config.streamID,
+    result: "fail"
+  };
+
+ 
+
+  var scriptShell="sh /rtmp-server/scripts/stop.sh "+config.clubname+" "+config.camera+" "+config.player+" "+config.streamID;
+
+var yourscript = exec(scriptShell,
+        (error, stdout, stderr) => {
+            if (error != null) {
+                return res.status(500).send('Error:'+error);
+            }else{
+                resultado.result="success";
+                res.json(resultado);
+            }
+        });
+
+    
+
+  
+
+
+  
+
+};
+
 exports.healthStreaming = function(req, res) {
 
   
