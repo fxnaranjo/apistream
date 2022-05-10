@@ -12,6 +12,15 @@ function validateString(myproperty,charNumber)
         return true;
 }
 
+function validateStringID(myproperty,charNumber)
+{
+   
+    if (myproperty==null || myproperty.length<charNumber)
+        return false;
+    else
+        return true;
+}
+
 
 function validateNumber(myproperty,charNumber)
 {
