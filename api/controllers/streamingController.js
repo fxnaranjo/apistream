@@ -295,9 +295,10 @@ var resultado ={
     result: "fail"
   };
 
-  res.json(resultado);
 
-  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" hl-camera hl-port hl-port 1 "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"'";
+  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" hl-camera "+config.cameraport+" 1000 1 "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"' "+myPath;
+
+  
 
 var yourscript = exec(scriptShell,
         (error, stdout, stderr) => {
