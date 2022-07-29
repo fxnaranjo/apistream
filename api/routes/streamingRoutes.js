@@ -14,6 +14,10 @@ module.exports = function(app) {
   app.route('/healthStreaming')
     .get(todoList.healthStreaming)
 
+    // todoList Routes
+  app.route('/createHighlight')
+  .post(todoList.highlight)
+
 
   
 };

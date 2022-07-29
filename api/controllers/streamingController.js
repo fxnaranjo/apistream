@@ -210,8 +210,98 @@ var yourscript = exec(scriptShell,
 exports.healthStreaming = function(req, res) {
 
   
+    console.log("Testing");
     return res.status(200).send('Streaming API Up and Running!!')
 
+  
+
+};
+
+
+
+exports.highlight = function(req, res) {
+
+
+    let myPath = "";
+    let highlight="";
+    let clubname="";
+    let highlightPath="";
+
+    if (  req.headers.authorization !== 'Basic ZnhuYXJhbmpvOjAyMGt3MzA=' )
+    {
+        return res.status(401).send('Authentication denied.');
+    }
+
+    var config = req.body;
+    
+    if (config==null)
+        return res.status(500).send('Bad Request');
+    
+        if (!validateString(config.videoPath,10))
+        {
+            return res.status(500).send('Bad Request: Invalid video Path');
+        }else
+        {
+            const myArray = config.videoPath.split("/");
+            clubname=myArray[3];
+            myPath = "/library/"+clubname+"/"+myArray[4];
+            let aux="-"+Date.now()+"-hl";
+            highlight=myArray[4].split("-")[0]+aux+".mp4";
+            highlightPath="/library/"+clubname+"/"+highlight;
+
+            if (!validateString(config.start,8))
+            {
+                    return res.status(500).send('Bad Request: Invalid start value');
+            }else{
+                if (!validateString(config.stop,8))
+                {
+                return res.status(500).send('Bad Request: Invalid stop value');
+                }else{
+                    if (!validateString(config.player,5))
+                            {
+                                return res.status(500).send('Bad Request: Invalid player');
+                            }else{
+
+                                if (!validatePrivate(config.private))
+                                    {
+                                        return res.status(500).send('Bad Request: Invalid private');
+                                    }else{
+                                    
+                                        if (!validateString(config.description,10))
+                                        {
+                                            return res.status(500).send('Bad Request: Invalid description: 10 characters');
+                                        }
+                                    }
+                            }
+                }
+            
+            }
+            
+        }
+
+        ///////////CALL SHELL SCRIPT////////////////////////
+
+const { exec } = require('child_process');
+
+var resultado ={
+    videoPath: config.videoPath,
+    highlightPath: highlightPath,
+    result: "fail"
+  };
+
+  res.json(resultado);
+
+  var scriptShell="sh /rtmp-server/scripts/init.sh "+clubname+" "+  +" hl-camera hl-port hl-port 1 "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"'";
+
+//var yourscript = exec(scriptShell,
+  //      (error, stdout, stderr) => {
+    //        if (error != null) {
+      //          return res.status(500).send('Error:'+error);
+        //    }else{
+          //      resultado.result="success";
+            //    res.json(resultado);
+            //}
+        //});
   
 
 };
