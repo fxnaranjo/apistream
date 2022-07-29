@@ -270,7 +270,13 @@ exports.highlight = function(req, res) {
                                         if (!validateString(config.description,10))
                                         {
                                             return res.status(500).send('Bad Request: Invalid description: 10 characters');
+                                        }else{
+                                            if (!validateNumber(config.cameraport,4))
+                                                {
+                                                    return res.status(500).send('Bad Request: Invalid camera port');
+                                                }
                                         }
+
                                     }
                             }
                 }
@@ -291,17 +297,17 @@ var resultado ={
 
   res.json(resultado);
 
-  var scriptShell="sh /rtmp-server/scripts/init.sh "+clubname+" "+  +" hl-camera hl-port hl-port 1 "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"'";
+  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" hl-camera hl-port hl-port 1 "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"'";
 
-//var yourscript = exec(scriptShell,
-  //      (error, stdout, stderr) => {
-    //        if (error != null) {
-      //          return res.status(500).send('Error:'+error);
-        //    }else{
-          //      resultado.result="success";
-            //    res.json(resultado);
-            //}
-        //});
+var yourscript = exec(scriptShell,
+        (error, stdout, stderr) => {
+            if (error != null) {
+                return res.status(500).send('Error:'+error);
+            }else{
+                resultado.result="success";
+                res.json(resultado);
+            }
+        });
   
 
 };
