@@ -128,13 +128,15 @@ var yourscript = exec(scriptShell,
             if (error != null) {
                 return res.status(500).send('Error:'+error);
             }else{
-                if (stdout=="nook")
+                var trimContent = stdout.trim();
+                if (trimContent=="nook")
                     res.json(resultado2);
                 else
                 {
                     resultado.result="success";
                     res.json(resultado);
                 }
+
             }
         });
 
