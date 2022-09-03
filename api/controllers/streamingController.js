@@ -116,6 +116,11 @@ var resultado ={
     result: "fail"
   };
 
+  var resultado2 ={
+    description: "Video Rejected because user is already active:"+config.player,
+    result: "fail"
+  };
+
   var scriptShell="sh /rtmp-server/scripts/init.sh "+config.clubname+" "+config.camera+" "+config.cameraport+" "+config.streamport+" "+config.playtime+" "+config.player+" "+config.private+" '"+config.description+"'";
 
 var yourscript = exec(scriptShell,
@@ -123,8 +128,13 @@ var yourscript = exec(scriptShell,
             if (error != null) {
                 return res.status(500).send('Error:'+error);
             }else{
-                resultado.result="success";
-                res.json(resultado);
+                if (stdout=="nook")
+                    res.json(resultado2);
+                else
+                {
+                    resultado.result="success";
+                    res.json(resultado);
+                }
             }
         });
 
