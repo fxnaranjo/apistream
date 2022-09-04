@@ -128,7 +128,7 @@ var yourscript = exec(scriptShell,
             if (error != null) {
                 return res.status(500).send('Error:'+error);
             }else{
-                var trimContent = stdout.trim();
+		        var trimContent = stdout.trim();    
                 if (trimContent=="nook")
                     res.json(resultado2);
                 else
