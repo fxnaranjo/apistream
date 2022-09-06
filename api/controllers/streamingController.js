@@ -6,7 +6,7 @@
 function validateString(myproperty,charNumber)
 {
    
-    if (myproperty==null || myproperty.length<charNumber)
+    if (myproperty==null || myproperty.length<charNumber || myproperty.length>100)
         return false;
     else
         return true;
@@ -89,7 +89,7 @@ exports.startCameraStream = function(req, res) {
                                 return res.status(500).send('Bad Request: Invalid private');
                             }else{
                                 if (!validateString(config.description,10)){
-                                    return res.status(500).send('Bad Request: Invalid description: 10 characters');
+                                    return res.status(500).send('Bad Request: Invalid description');
                                 }
                             }
                         }
