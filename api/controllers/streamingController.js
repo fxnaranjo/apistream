@@ -121,6 +121,11 @@ var resultado ={
     result: "fail"
   };
 
+  var resultado3 ={
+    description: "Video is not being received from camera:",
+    result: "fail"
+  };
+
   var scriptShell="sh /rtmp-server/scripts/init.sh "+config.clubname+" "+config.camera+" "+config.cameraport+" "+config.streamport+" "+config.playtime+" "+config.player+" "+config.private+" '"+config.description+"'";
 
 var yourscript = exec(scriptShell,
@@ -130,11 +135,19 @@ var yourscript = exec(scriptShell,
             }else{
 		        var trimContent = stdout.trim();    
                 if (trimContent=="nook")
+                {
                     res.json(resultado2);
+                }
                 else
                 {
-                    resultado.result="success";
-                    res.json(resultado);
+                    if (trimContent=="noflv")
+                    {
+                        res.json(resultado3);
+                    }
+                    else{
+                        resultado.result="success";
+                        res.json(resultado);
+                    }
                 }
 
             }
