@@ -271,7 +271,7 @@ exports.highlight = function(req, res) {
             clubname=myArray[3];
             myPath = "/library/"+clubname+"/"+myArray[4];
             let aux="-"+Date.now()+"-hl";
-            highlight=myArray[4].split("-")[0]+aux+".mp4";
+            highlight=myArray[4].split("-")[0]+aux;
             highlightPath="/library/"+clubname+"/"+highlight;
 
             if (!validateString(config.start,8))
@@ -321,7 +321,7 @@ var resultado ={
   };
 
 
-  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" hl-camera "+config.cameraport+" 1000 1 "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"' "+myPath;
+  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" "+config.cameraport+" "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"' "+myPath;
 
   
 
