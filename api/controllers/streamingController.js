@@ -6,7 +6,7 @@
 function validateString(myproperty,charNumber)
 {
    
-    if (myproperty==null || myproperty.length<charNumber || myproperty.length>100)
+    if (myproperty==null || myproperty.length<charNumber || myproperty.length>200)
         return false;
     else
         return true;
