@@ -6,6 +6,10 @@ module.exports = function(app) {
   app.route('/startStreaming')
     .post(todoList.startCameraStream)
 
+   // todoList Routes
+   app.route('/startStreaming2')
+   .post(todoList.validate)
+
   // todoList Routes
   app.route('/stopStreaming')
     .post(todoList.stopCameraStream)

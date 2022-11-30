@@ -1,5 +1,5 @@
 'use strict';
-
+exports.validate = doStuff2;
 
 
 
@@ -337,3 +337,178 @@ var yourscript = exec(scriptShell,
   
 
 };
+
+
+ async function doStuff2(req, res) {
+
+    if (  req.headers.authorization !== 'Basic ZnhuYXJhbmpvOjAyMGt3MzA=' )
+    {
+        return res.status(401).send('Authentication denied.');
+    }
+
+
+
+    const {Client } = require('pg');
+    const client = new Client({
+        user: 'sportprodb',
+        host: '10.70.208.3',
+        database: 'sportpro',
+        password: 'F020kw31xx!',
+        port: 5432,
+    });
+
+    var config = req.body;
+
+    if (config==null)
+    return res.status(500).send('Bad Request');
+
+    if (!validateString(config.clubname,6))
+    {
+        return res.status(500).send('Bad Request: Invalid clubname');
+    }else{
+        if (!validateString(config.camera,3))
+        {
+            return res.status(500).send('Bad Request: Invalid camera');
+        }else
+        {
+            if (!validateNumber(config.cameraport,4))
+            {
+                return res.status(500).send('Bad Request: Invalid cameraport');
+            }else{
+                if (!validateNumber(config.streamport,4)){
+                    return res.status(500).send('Bad Request: Invalid streamport');
+                }else{
+                    if (!validatePlaytime(config.playtime)){
+                        return res.status(500).send('Bad Request: Invalid playtime');
+                    }else{
+                        if (!validateString(config.player,5)){
+                            return res.status(500).send('Bad Request: Invalid player');
+                        }else{
+                            if (!validatePrivate(config.private)){
+                                return res.status(500).send('Bad Request: Invalid private');
+                            }else{
+                                if (!validateString(config.description,10)){
+                                    return res.status(500).send('Bad Request: Invalid description');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    var resultado ={
+        clubname: config.clubname,
+        camera: config.camera,
+        cameraport: config.cameraport,
+        streamport: config.streamport,
+        playtime: config.playtime,
+        player: config.player,
+        private: config.private,
+        description: config.description,
+        result: "fail"
+    };
+
+    try {
+               
+                client.connect();
+
+               
+                
+                const query = {
+                    text: `select p.id_membership as membresia from stream.player p where p.username=\$1;`,
+                    values: ['myrecord'],
+                }
+
+                const query2 = {
+                    text: `select count(*) as partidos from stream.live l,stream.player p  where l.id_player=p.id and p.username=\$1 and l.initialtime > (NOW() - INTERVAL '1 DAY');`,
+                    values: ['myrecord'],
+                }
+
+
+                query.values[0]=config.player;
+                query2.values[0]=config.player;
+
+               
+
+                const membresia = await client.query(query);
+
+
+                let validacion=false;
+
+                if (membresia.rows[0].membresia==1)
+                {
+                    const respuesta = await client.query(query2);
+                    if (respuesta.rows[0].partidos>0)
+                    {
+                        resultado ={};
+                        resultado.status='ERROR';
+                        resultado.result='El usuario superó el # de partidos diarios';
+                    }else{
+                        resultado.result='success - Usuario FREE';
+                        validacion=true;
+                    }
+                }else{
+
+                    resultado.result='success - Usuario NON-FREE';
+                    validacion=true;
+                }
+
+               if (validacion==true)
+               {
+                    ///////////CALL SHELL SCRIPT////////////////////////
+
+                    const { exec } = require('child_process');
+
+                        var resultado2 ={
+                        description: "Video Rejected because user is already active:"+config.player,
+                        result: "fail"
+                      };
+                    
+                      var resultado3 ={
+                        description: "Video is not being received from camera:",
+                        result: "fail"
+                      };
+                    
+                      var scriptShell="sh /rtmp-server/scripts/init.sh "+config.clubname+" "+config.camera+" "+config.cameraport+" "+config.streamport+" "+config.playtime+" "+config.player+" "+config.private+" '"+config.description+"'";
+
+                      var yourscript = exec(scriptShell,
+                        (error, stdout, stderr) => {
+                            if (error != null) {
+                                return res.status(500).send('Error:'+error);
+                            }else{
+                                var trimContent = stdout.trim();    
+                                if (trimContent=="nook")
+                                {
+                                    resultado=resultado2;
+                                }
+                                else
+                                {
+                                    if (trimContent=="noflv")
+                                    {
+                                        resultado=resultado3;
+                                    }
+                                }
+                
+                            }
+                        });
+
+               }
+
+            
+
+        }catch (err) {
+            resultado ={};
+            resultado.status='ERROR';
+            resultado.result=err.stack;
+        }
+
+        res.json(resultado);
+        const stop=await client.end();
+
+
+  
+
+};
+
