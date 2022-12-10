@@ -31,6 +31,16 @@ function validateNumber(myproperty,charNumber)
         return true;
 }
 
+
+function validateCategory(myproperty)
+{
+   
+    if (myproperty==null || myproperty<0 || isNaN(myproperty))
+        return false;
+    else
+        return true;
+}
+
 function validatePlaytime(myproperty)
 {
    
@@ -299,6 +309,11 @@ exports.highlight = function(req, res) {
                                             if (!validateNumber(config.cameraport,4))
                                                 {
                                                     return res.status(500).send('Bad Request: Invalid camera port');
+                                                }else{
+                                                    if (!validateCategory(config.categoria))
+                                                    {
+                                                        return res.status(500).send('Bad Request: Invalid categoria');
+                                                    }
                                                 }
                                         }
 
@@ -321,7 +336,7 @@ var resultado ={
   };
 
 
-  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" "+config.cameraport+" "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"' "+myPath;
+  var scriptShell="sh /rtmp-server/scripts/createHL.sh "+clubname+" "+highlight+" "+config.cameraport+" "+config.start+" "+config.stop+" "+config.player+" "+config.private+" '"+config.description+"' '"+myPath+"' "+config.categoria;
 
   
 
