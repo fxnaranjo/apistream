@@ -227,11 +227,13 @@ var yourscript = exec(scriptShell,
         (error, stdout, stderr) => {
             if (error != null) {
                 return res.status(500).send('Error:'+error);
+            }else{
+                resultado.result="success";
+                res.json(resultado);
             }
         });
 
-        resultado.result="success";
-        res.json(resultado);
+        
 
   
 
