@@ -6,8 +6,8 @@ var express = require('express'),
 
 const https = require("https");
   
-  var privateKey = fs.readFileSync( '/certificates/privkey.pem' );
-  var certificate = fs.readFileSync( '/certificates/fullchain.pem' );
+  var privateKey = fs.readFileSync( '/home/fnaranjo/PROYECTOS/ALL/Oscar/certificates-2024/sportprotv.key' );
+  var certificate = fs.readFileSync( '/home/fnaranjo/PROYECTOS/ALL/Oscar/certificates-2024/sportprotv.crt' );
   
 
 app.use(bodyParser.urlencoded({ extended: true }));
